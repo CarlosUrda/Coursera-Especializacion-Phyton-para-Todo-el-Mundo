@@ -21,8 +21,9 @@ maximo = None
 minimo = None
 while True:
     numero = raw_input( "Introduce un número: ")
-    if numero.lower() == "done":
-        break
+    if numero.lower() == "done": break
+
+    if not( numero.strip()): continue
 
     try:
         numero = int( numero)

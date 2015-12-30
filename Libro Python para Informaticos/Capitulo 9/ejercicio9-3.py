@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-# Extraer todas las palabras de un archivo y guardarlas como claves en un 
-# diccionario junto con el número de veces que aparece.
+# Contar el número de mensajes de cada dirección de origen en un registro de
+# correos.
 
 __author__      = "Carlos A. Gómez Urda"
 __copyright__   = "Copyright 2015"
@@ -12,27 +12,32 @@ __version__     = "1.0"
 __maintainer__  = "Carlos A. Gómez Urda"
 __email__       = "carlosurda@yahoo.es"
 __status__      = "Producción"
-__date__        = "26/12/2015"
+__date__        = "30/12/2015"
 
 
 while True:
     nombreDeArchivo = raw_input( "Introduce el nombre del archivo: ")
     if not nombreDeArchivo: continue
- 
+
     try:
-       archivo = open( nombreDeArchivo)
+        archivo = open( nombreDeArchivo)
     except:
-        print "El archivo no existe"
+        print "¡El archivo no existe!"
         continue
 
     break
 
-palabras = {}
-for palabra in archivo:
-    palabra = palabra.strip()
-    palabras[palabra] = palabras.get( palabra, 0) + 1
+cuentaCorreos = dict()
 
-archivo.close()
-print palabras
+for linea in archivo:
+    palabras = linea.split()
+
+    if len( palabras) < 2 or palabras[0].upper() != "FROM":
+        continue
+
+    correo = palabras[1]
+    cuentaCorreos[correo] = cuentaCorreos[correo]+1 if correo in cuentaCorreos else 1
+
+print cuentaCorreos
 
 

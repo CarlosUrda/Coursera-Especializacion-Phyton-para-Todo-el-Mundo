@@ -36,7 +36,7 @@ for linea in archivo:
         continue
 
     correo = palabras[1]
-    cuentaCorreos[correo] = cuentaCorreos[correo]+1 if correo in cuentaCorreos else 1
+    cuentaCorreos[correo] = cuentaCorreos.get( correo, 0) + 1
 
 print cuentaCorreos
 

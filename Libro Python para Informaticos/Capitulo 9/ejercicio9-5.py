@@ -39,8 +39,7 @@ for linea in archivo:
     if len( listaCorreo) < 2: continue
     dominio = listaCorreo[1]
 
-    cuentaDeDominios[dominio] = cuentaDeDominios[dominio]+1 \
-                                if dominio in cuentaDeDominios else 1
+    cuentaDeDominios[dominio] = cuentaDeDominios.get(dominio, 0) + 1
        
 print cuentaDeDominios
 

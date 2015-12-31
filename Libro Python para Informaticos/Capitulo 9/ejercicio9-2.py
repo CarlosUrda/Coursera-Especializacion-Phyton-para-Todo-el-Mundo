@@ -36,7 +36,7 @@ for linea in archivo:
         continue
 
     dia = palabras[2].capitalize()
-    cuentaMensajes[dia] = cuentaMensajes[dia]+1 if dia in cuentaMensajes else 1
+    cuentaMensajes[dia] = cuentaMensajes.get( dia, 0) + 1
 
 print cuentaMensajes
 

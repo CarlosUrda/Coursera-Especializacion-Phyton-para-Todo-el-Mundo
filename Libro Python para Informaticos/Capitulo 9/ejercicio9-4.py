@@ -37,8 +37,8 @@ for linea in archivo:
         continue
 
     correo = palabras[1]
-    cuentaDeCorreos[correo] = cuentaDeCorreos[correo]+1 \
-                              if correo in cuentaDeCorreos else 1
+    cuentaDeCorreos[correo] = cuentaDeCorreos.get( correo, 0) + 1
+
     if (correoMasFrecuente is None or 
         cuentaDeCorreos[correo] > cuentaDeCorreos[correoMasFrecuente]):
         correoMasFrecuente = correo

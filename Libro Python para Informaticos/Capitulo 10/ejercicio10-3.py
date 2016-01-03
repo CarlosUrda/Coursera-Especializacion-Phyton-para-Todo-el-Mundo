@@ -28,17 +28,19 @@ while True:
 
     break
 
+# tablala a usar como mapeo en la traducción de cada línea.
 cuentaLetras = dict()
-tabla = zip( u"áéíóú" + unicode( string.punctuation), 
-             list(u"aeiou") + [None]*len( string.punctuation))
-tabla = {ord(ini):(ord(fin) if fin else None) for ini,fin in tabla}
-print tabla
+letrasACambiar = [ord(letra) for letra in u"áéíóú"]
+letrasCambiadas = [ord(letra) for letra in u"aeiou"]
+letrasABorrar = [ord(letra) for letra in unicode(string.punctuation + " \n\t\r"+
+                                                 string.digits, 'utf-8')]
+tabla = dict( zip( letrasACambiar + letrasABorrar, letrasCambiadas +
+                   [None]*len(letrasABorrar)))
 
 for linea in archivo:
-    linea = unicode( linea)
+    linea = unicode( linea, 'utf-8')
     linea = linea.lower().translate( tabla)
 
-    linea = linea.encode()
     for letra in linea:
         cuentaLetras[letra] = cuentaLetras.get( letra, 0) + 1
 
@@ -51,4 +53,3 @@ ordenLetras.sort( reverse=True)
 for cuenta, letra in ordenLetras:
     print letra, cuenta
 
-print string.punctuation

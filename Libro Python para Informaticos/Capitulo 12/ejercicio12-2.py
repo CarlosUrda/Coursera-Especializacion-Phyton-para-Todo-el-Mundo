@@ -48,11 +48,34 @@ except:
     print "Error al enviar la petición GET a", url
     exit()
 
-print "Petición GET enviada correctamente a", url
+print "Petición GET enviada correctamente a", url, "\n"
 
+maxTamannoBloque = 584
+tamannoBloque = 0
+bloque = 1 
+datos = None
 while True:
-    datos = sock.recv(1024)
-    if len( datos) < 1:
-        break
+    if datos is None:
+        datos = sock.recv(1024)
+        tamanno = len( datos)
 
-    print datos
+    if tamanno < 1: break
+
+    tamannoBloque += tamanno
+    if tamannoBloque < maxTamannoBloque:
+        print datos
+        datos = None
+        continue
+
+    # Tamaño de caracteres restantes en esta lectura que sobresalen de este
+    # bloque. Se consideran como el tamaño de la nueva lectura.
+    tamanno = tamannoBloque - maxTamannoBloque 
+    print datos[:-tamanno] if tamanno > 0 else datos
+    raw_input( "\n*** Fin de Bloque " + str( bloque) + " --> " +\
+               str( maxTamannoBloque) + " CARACTERES ***")
+    bloque += 1
+    datos = datos[-tamanno:] if tamanno > 0 else None
+    tamannoBloque = 0
+
+print "Tamaño total: ", (bloque-1)*maxTamannoBloque + tamannoBloque
+

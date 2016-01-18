@@ -52,7 +52,6 @@ print "Petición GET enviada correctamente a", url
 
 while True:
     datos = sock.recv(1024)
-    if len( datos) < 1:
-        break
+    if len( datos) < 1: break
 
     print datos

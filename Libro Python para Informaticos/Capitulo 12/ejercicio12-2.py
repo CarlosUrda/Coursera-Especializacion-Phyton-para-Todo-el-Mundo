@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-# Lectura de una web indicada por el usuario usando sockets. 
+# Lectura de una web indicada por el usuario usando sockets. El contenido de
+# la página se muestra por bloques.
 
 __author__      = "Carlos A. Gómez Urda"
 __copyright__   = "Copyright 2016"
@@ -50,32 +51,34 @@ except:
 
 print "Petición GET enviada correctamente a", url, "\n"
 
-maxTamannoBloque = 584
+maxTamannoBloque = 1584
 tamannoBloque = 0
 bloque = 1 
 datos = None
+
+# En este bucle evitamos tener que llamar varias veces a recv, porque cuando
+# al recibir datos sobrepasa el tamaño máximo del bloque, en la siguiente
+# iteración se procesan esos datos sobrantes hasta que ya no se sobrepasa el
+# tamaño máximo, que es cuando se vuelve a leer.
 while True:
+    # Si no hay datos pendientes que sobraron del bloque anterior.
     if datos is None:
         datos = sock.recv(1024)
         tamanno = len( datos)
-
-    if tamanno < 1: break
-
-    tamannoBloque += tamanno
+        if tamanno < 1: break
+        tamannoBloque += tamanno
+    
     if tamannoBloque < maxTamannoBloque:
         print datos
         datos = None
         continue
 
-    # Tamaño de caracteres restantes en esta lectura que sobresalen de este
-    # bloque. Se consideran como el tamaño de la nueva lectura.
-    tamanno = tamannoBloque - maxTamannoBloque 
-    print datos[:-tamanno] if tamanno > 0 else datos
+    tamannoBloque -= maxTamannoBloque 
+    print datos[:-tamannoBloque] if tamannoBloque > 0 else datos
     raw_input( "\n*** Fin de Bloque " + str( bloque) + " --> " +\
                str( maxTamannoBloque) + " CARACTERES ***")
     bloque += 1
-    datos = datos[-tamanno:] if tamanno > 0 else None
-    tamannoBloque = 0
+    datos = datos[-tamannoBloque:] if tamannoBloque > 0 else None
 
 print "Tamaño total: ", (bloque-1)*maxTamannoBloque + tamannoBloque
 

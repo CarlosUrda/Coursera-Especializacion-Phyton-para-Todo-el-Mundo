@@ -18,9 +18,10 @@ __date__        = "16/01/2016"
 import urllib
 import re
 
+regex = "^http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*"
+ 
 while True:
     direccion = raw_input( "Introduce dirección url => ").strip()
-    regex = "^http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*"
     match = re.search( regex, direccion)
 
     if match is not None:

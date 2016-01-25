@@ -17,9 +17,10 @@ __date__        = "16/01/2016"
 import socket
 import re
 
+regex = "^http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*:(\d+)$"
+ 
 while True:
     direccion = raw_input( "Introduce dirección «url:puerto» => ").strip()
-    regex = "^http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*:(\d+)$"
     match = re.search( regex, direccion)
 
     if match is not None:

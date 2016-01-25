@@ -57,17 +57,17 @@ while True:
     if tamanno < 1: break
 
     tamannoBloque += tamanno
-    if tamannoBloque < maxTamannoBloque:
+    if tamannoBloque <= maxTamannoBloque:
         print datos
         datos = ""
         continue
 
     tamannoRestante = tamannoBloque - maxTamannoBloque 
-    print datos[:-tamannoRestante] if tamannoRestante > 0 else datos
+    print datos[:-tamannoRestante] 
     raw_input( "\n*** Fin de Bloque " + str( bloque) + " --> " +\
                str( maxTamannoBloque) + " CARACTERES ***")
     bloque += 1
-    datos = datos[-tamannoRestante:] if tamannoRestante > 0 else ""
+    datos = datos[-tamannoRestante:]
     tamannoBloque = 0
 
 print "Tamaño total: ", (bloque-1)*maxTamannoBloque + tamannoBloque

@@ -18,9 +18,10 @@ __date__        = "16/01/2016"
 import socket
 import re
 
+regex = "^http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*:(\d+)$"
+ 
 while True:
     direccion = raw_input( "Introduce dirección «url:puerto» => ").strip()
-    regex = "^http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*:(\d+)$"
     match = re.search( regex, direccion)
 
     if match is not None:
@@ -51,7 +52,7 @@ except:
 
 print "Petición GET enviada correctamente a", url, "\n"
 
-maxTamannoBloque = 1584
+maxTamannoBloque = 284
 tamannoBloque = 0
 bloque = 1 
 datos = None
@@ -68,17 +69,17 @@ while True:
         if tamanno < 1: break
         tamannoBloque += tamanno
     
-    if tamannoBloque < maxTamannoBloque:
+    if tamannoBloque <= maxTamannoBloque:
         print datos
         datos = None
         continue
 
     tamannoBloque -= maxTamannoBloque 
-    print datos[:-tamannoBloque] if tamannoBloque > 0 else datos
+    print datos[:-tamannoBloque]
     raw_input( "\n*** Fin de Bloque " + str( bloque) + " --> " +\
                str( maxTamannoBloque) + " CARACTERES ***")
     bloque += 1
-    datos = datos[-tamannoBloque:] if tamannoBloque > 0 else None
+    datos = datos[-tamannoBloque:]
 
 print "Tamaño total: ", (bloque-1)*maxTamannoBloque + tamannoBloque
 

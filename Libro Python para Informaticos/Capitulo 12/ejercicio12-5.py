@@ -11,28 +11,27 @@ __version__     = "1.0"
 __maintainer__  = "Carlos A. Gómez Urda"
 __email__       = "carlosurda@yahoo.es"
 __status__      = "Producción"
-__date__        = "16/01/2016"
+__date__        = "25/01/2016"
 
 
 import socket
 import re
 
-regex = "^http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*:(\d+)$"
+regex = "^(http://(\w(-*\w)*(\.\w(-*\w)*)+)(/[^/\s]+)*):(?P<puerto>\d+)$"
  
 while True:
-    direccion = raw_input( "Introduce dirección «url:puerto» => ").strip()
-    match = re.search( regex, direccion)
+    url = raw_input( "Introduce dirección «url:puerto» => ").strip()
+    match = re.search( regex, url)
 
     if match is not None:
-        servidor = match.group(1)
-        url_puerto = match.group(0).rsplit(":", 1)
-        url = url_puerto[0]
-        puerto = int( url_puerto[1])
+        servidor = match.group(2)
+        url = match.group(1)
+        puerto = int( match.groupdict()['puerto'])
         break
 
     print "Formato de URL incorrecto."
 
-print "Formato de url", match.group(0), "válido"
+print "Formato de url", url, "válido"
 
 sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM)
 try:
@@ -51,8 +50,16 @@ except:
 
 print "Petición GET enviada correctamente a", url
 
+esCabecera = True
 while True:
     datos = sock.recv(1024)
     if len( datos) < 1: break
+    if not esCabecera:
+        print datos
+        continue
 
-    print datos
+    cabecera = datos.split( "\r\n\r\n", 1)
+    if len( cabecera) > 1:
+        esCabecera = False
+        print cabecera[1]
+

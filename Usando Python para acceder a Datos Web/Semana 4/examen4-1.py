@@ -45,5 +45,3 @@ print "Cuenta", cuenta
 print "Suma", total
 
 
-
-
